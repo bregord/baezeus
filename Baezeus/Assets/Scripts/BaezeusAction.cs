@@ -14,7 +14,7 @@ public class BaezeusAction : MonoBehaviour {
 	void OnTriggerEnter (Collider other) 
 	{
 		if (other.tag == "Critter") {
-
+			Destroy (other.gameObject);
 			// End game script here to be triggered cuz BaeZeus is dead
 		}
 	}
