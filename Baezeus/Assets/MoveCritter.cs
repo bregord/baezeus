@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameManager : MonoBehaviour {
+public class MoveCritter : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
