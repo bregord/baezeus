@@ -27,7 +27,7 @@ public class VectorLines : MonoBehaviour
 		                            "} } }");
 		lineMaterial.hideFlags = HideFlags.HideAndDontSave;
 		lineMaterial.shader.hideFlags = HideFlags.HideAndDontSave;
-		cam = camera;
+		cam = GetComponent<Camera>();
 	}
 	
 	public void InitializeLines(List<List<Vector2>> newPointsList)
