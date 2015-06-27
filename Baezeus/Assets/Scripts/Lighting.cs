@@ -64,7 +64,7 @@ public class Lighting : MonoBehaviour
 			lineCount = 0;
 			touched= false;
 			UpdateLine();
-			FixedUpdate();
+			//FixedUpdate();
 		}
 		
 		print (touched);
