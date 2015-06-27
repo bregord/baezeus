@@ -6,12 +6,21 @@ public class LineRendererTest : MonoBehaviour
 {
 	List<Vector3> linePoints = new List<Vector3>();
 	LineRenderer lineRenderer;
-	public float startWidth = 1.0f;
-	public float endWidth = 1.0f;
+	public float startWidthInit = 1.0f;
+	public float endWidthInit = 1.0f;
+	private float startWidth;
+	private float endWidth; 
 	public float threshold = 0.001f;
 	Camera thisCamera;
 	int lineCount = 0;
 	private bool touched = false;
+	private bool drawn = false;
+	public bool damaging = false;
+	public float chargeInterval;
+	private float currentTime;
+	private float chargeTime;
+	public float growthRate;
+
 	public int maxLightningCharge = 50;
 
 
@@ -25,17 +34,31 @@ public class LineRendererTest : MonoBehaviour
 	
 	void FixedUpdate()
 	{
-		//lineRenderer.GetComponent
-
-
-
+		currentTime = Time.time;
+		//drawing
 		if (Input.GetButtonDown ("Fire1")) {
 			touched = true;
 		} if(Input.GetButtonUp ("Fire1")) {
 			touched = false;
-			linePoints.Clear ();
+			drawn = true;
 			UpdateLine ();
+			chargeTime = Time.time;
 		}
+
+		if (drawn == true && Mathf.Abs (currentTime - chargeTime) < chargeInterval) {
+			startWidth = startWidth + growthRate;
+			endWidth = endWidth + growthRate;
+			lineRenderer.SetWidth(startWidth, endWidth);
+
+		} else if(drawn == true && Mathf.Abs (currentTime - chargeTime) > chargeInterval) {
+			drawn = false;
+			damaging = true;
+			linePoints.Clear ();
+			UpdateLine();
+			startWidth = startWidthInit;
+				endWidth = endWidthInit;
+		}
+
 
 		if (lineCount > maxLightningCharge) {
 			lineCount = 0;
@@ -80,4 +103,8 @@ public class LineRendererTest : MonoBehaviour
 		lineCount = linePoints.Count;
 	}
 
+	void chargeLightning(){
+
+
+	}
 }
