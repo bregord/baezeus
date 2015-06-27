@@ -11,36 +11,63 @@ public class LineRendererTest : MonoBehaviour
 	public float threshold = 0.001f;
 	Camera thisCamera;
 	int lineCount = 0;
-	
+	private bool touched = false;
+	public int maxLightningCharge = 50;
+
+
 	Vector3 lastPos = Vector3.one * float.MaxValue;
-	
-	
+
 	void Awake()
 	{
 		thisCamera = Camera.main;
 		lineRenderer = GetComponent<LineRenderer>();
 	}
 	
-	void Update()
+	void FixedUpdate()
 	{
-		Vector3 mousePos = Input.mousePosition;
-		mousePos.z = thisCamera.nearClipPlane;
-		Vector3 mouseWorld = thisCamera.ScreenToWorldPoint(mousePos);
-		
-		float dist = Vector3.Distance(lastPos, mouseWorld);
-		
-		if(dist <= threshold)
-			return;
-		
-		lastPos = mouseWorld;
-		if(linePoints == null)
-			linePoints = new List<Vector3>();
-		linePoints.Add(mouseWorld);
-		
-		UpdateLine();
+		//lineRenderer.GetComponent
+
+
+
+		if (Input.GetButtonDown ("Fire1")) {
+			touched = true;
+		} if(Input.GetButtonUp ("Fire1")) {
+			touched = false;
+			linePoints.Clear ();
+			UpdateLine ();
+		}
+
+		if (lineCount > maxLightningCharge) {
+			lineCount = 0;
+			touched= false;
+			UpdateLine();
+			FixedUpdate();
+		}
+
+		print (touched);
+
+		if (touched == true){
+			Vector3 mousePos = Input.mousePosition;
+			//if (Input.GetButtonDown ("Fire1")) { //Need to change to touch.
+			mousePos.z = thisCamera.nearClipPlane;
+			Vector3 mouseWorld = thisCamera.ScreenToWorldPoint (mousePos);
+			
+			float dist = Vector3.Distance (lastPos, mouseWorld);
+			
+			if (dist <= threshold)
+				return;
+			
+			lastPos = mouseWorld;
+			if (linePoints == null)
+				linePoints = new List<Vector3> ();
+			linePoints.Add (mouseWorld);
+			
+			UpdateLine ();
+		}
+
 	}
-	
-	
+
+
 	void UpdateLine()
 	{
 		lineRenderer.SetWidth(startWidth, endWidth);
@@ -52,4 +79,5 @@ public class LineRendererTest : MonoBehaviour
 		}
 		lineCount = linePoints.Count;
 	}
+
 }
